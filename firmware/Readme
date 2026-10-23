@@ -1,0 +1,33 @@
+## Firmware and Communication
+
+The ESP8266 NodeMCU hosts an HTTP web server on port 80 and receives control commands from the Android application over Wi-Fi.
+
+### Supported commands
+
+The application sends commands to the `/control` endpoint using the `command` parameter.
+
+| Command format | Function |
+|---|---|
+| `S:50,D:0` | Move forward at a speed setting of 50 |
+| `S:-50,D:0` | Move backward at a speed setting of -50 |
+| `S:0,D:50` | Turn using differential steering |
+| `S:0,D:0` | Stop both motors |
+| `H:1` | Start the horn pattern |
+| `H:0` | Stop the horn |
+
+Speed and direction values are limited to -100 to +100. The firmware combines these values to calculate the left and right motor speeds and converts them into PWM signals.
+
+### Status indication
+
+The built-in LED indicates recent controller activity while Wi-Fi is connected. The firmware uses a three-second activity timeout for this indication.
+
+### Firmware configuration
+
+1. Install the ESP8266 board package in Arduino IDE.
+2. Enter your Wi-Fi credentials locally.
+3. Verify the motor-driver and horn pin connections.
+4. Select the correct ESP8266 board and serial port.
+5. Upload the sketch and open Serial Monitor at 115200 baud.
+6. Note the IP address printed after Wi-Fi connection and ensure the Android application sends commands in the expected format.
+
+**Security note:** This project is intended for a trusted local network. The current HTTP server does not implement authentication or encryption, so do not expose it directly to the public internet.
